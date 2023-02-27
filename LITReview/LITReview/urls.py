@@ -19,6 +19,8 @@ import reviews.views
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth.views import LoginView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,4 +30,13 @@ urlpatterns = [
         name='login'),
     path('logout/', authentication.views.logout_user, name='logout'),
     path('home/', reviews.views.home, name='home'),
+    path('signup/', authentication.views.signup_page, name='signup'),
+    path('photo/upload/', reviews.views.photo_upload, name='photo_upload'),
+    path('reviews/create', reviews.views.review_and_photo_upload, name='review_create'),
+    path('review/<int:review_id>', reviews.views.view_review, name='view_review'),
+    path('review/<int:review_id>/edit', reviews.views.edit_review, name='edit_review'),
+    path('photo/upload-multiple/', reviews.views.create_multiple_photos, name='create_multiple_photos'),
 ]
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
