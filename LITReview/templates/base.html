@@ -1,0 +1,25 @@
+{% load static %}
+<html>
+    <head>
+        <title>LITReview</title>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    </head>
+    <body>
+        <div class="navbar">
+            <div style="width: 392.92px;"></div>
+            <div class="title_navbar">
+                <p>LITReview</p>
+            </div>
+            <div>
+                <a href="#">Flux</a>
+                <a href="#">Posts</a>
+                <a href="#">Abonnements</a>
+                <a href="#">Se déconnecter</a>
+             </div>
+
+          </div>
+        <div class="main">
+            {% block content %}{% endblock content %}
+        </div>
+    </body>
+</html>

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container_button_global_review">
+        <button style="margin-right: 25px;">Demander une critique</button>
+        <button style="margin-left: 25px;">Créer une critique</button>
+    </div>
+    {% if latest_ticket_list %}
+        <ul>
+        {% for ticket in latest_ticket_list %}
+            <li><a href="{% url 'articles:detail_ticket' ticket.id %}" target="_blank">{{ ticket.title }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Pas de tickets ou de revues disponible</p>
+    {% endif %}
+{% endblock content %}
