@@ -22,7 +22,7 @@ def ticket_upload(request):
         ticket_form = forms.TicketForm(request.POST, request.FILES)
         if (ticket_form.is_valid()):
             ticket = ticket_form.save(commit=False)
-            ticket.uploader = request.user
+            ticket.user = request.user
             ticket.save()
             return redirect('articles/index.html')
     context = {
