@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1 style="text-align: center; align-items: center;">Créer un ticket</h1>
-    <h1>{{ ticket.ticket_title }}</h1>
-    <img src="{{ ticket.image.url }}">
-    <p>{{ ticket.description }}</p>
+    <h1 style="text-align: center; align-items: center;">Créer un ticket</h2>
+    <form method="post" enctype="multipart/form-data">
+        {{ ticket_form.as_p }}
+        {% csrf_token %}
+        <button type="submit" >Publier</button>
+    </form>
 {% endblock content %}
