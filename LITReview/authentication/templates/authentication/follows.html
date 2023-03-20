@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+    <p style="text-align: center;">Suivre d'autres utilisateurs</p>
+    <p style="text-align: center;">Abonnements</p>
+    <p style="text-align: center;">Abonnés</p>
+
+    <p > {{ author.following.count }} </p>
+    <p> {{ author.followers.count }} </p>
+    <p>Vous êtes connecté en tant que {{ request.user.followers.count }}</p>
+{% endblock content %}

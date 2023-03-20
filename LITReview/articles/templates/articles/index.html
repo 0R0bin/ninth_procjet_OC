@@ -2,8 +2,9 @@
 {% block content %}
     <div class="container_button_global_review">
         <button style="margin-right: 25px;">Demander une critique</button>
-        <button style="margin-left: 25px;">Créer une critique</button>
+        <a href="{% url 'articles:create_ticket' %}"><button style="margin-left: 25px;">Créer une critique</button></a>
     </div>
+    <p>Vous êtes connecté en tant que {{ request.user }}</p>
     {% if latest_ticket_list %}
         <ul>
         {% for ticket in latest_ticket_list %}
@@ -14,5 +15,3 @@
         <p>Pas de tickets ou de revues disponible</p>
     {% endif %}
 {% endblock content %}
-
-<!-- onclick="location.href='{% url 'articles:create_ticket' %}'" -->

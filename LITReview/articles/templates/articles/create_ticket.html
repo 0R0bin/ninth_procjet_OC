@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+<p>Vous êtes connecté en tant que {{ request.user }}</p>
     <h1 style="text-align: center; align-items: center;">Créer un ticket</h2>
     <form method="post" enctype="multipart/form-data">
         {{ ticket_form.as_p }}

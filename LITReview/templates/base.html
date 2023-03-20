@@ -13,8 +13,8 @@
             <div>
                 <a href="#">Flux</a>
                 <a href="#">Posts</a>
-                <a href="#">Abonnements</a>
-                <a href="#">Se déconnecter</a>
+                <a href="{% url 'authentication:follows' %}">Abonnements</a>
+                <a href="{% url 'authentication:logout' %}">Se déconnecter</a>
              </div>
 
           </div>
