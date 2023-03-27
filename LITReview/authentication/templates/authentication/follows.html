@@ -1,10 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
     <p style="text-align: center;">Suivre d'autres utilisateurs</p>
+    <p>Vous êtes connecté en tant que {{ request.user }}</p>
     <p style="text-align: center;">Abonnements</p>
-    <p style="text-align: center;">Abonnés</p>
 
-    <p > {{ author.following.count }} </p>
-    <p> {{ author.followers.count }} </p>
-    <p>Vous êtes connecté en tant que {{ request.user.followers.count }}</p>
+    {{follow_form.as_p}}
+    {% csrf_token %}
+    <!-- <table cellspacing="0" width="100%">
+        <tbody>
+             {% for follow in follow_form %} 
+            <tr>
+                <td style="border: 1px solid #333;">{{ follow.followed_user }}</td>
+                <td style="border: 1px solid #333;">Se désabonner</td>
+            </tr>
+             {% endfor %} 
+        </tbody>
+    </table>     -->
+    <p style="text-align: center;">Abonnés</p>
 {% endblock content %}

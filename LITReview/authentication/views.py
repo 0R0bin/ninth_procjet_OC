@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django import forms
 from django.contrib.auth import login, authenticate, logout # import des fonctions login et authenticate
 from django.views.generic import View
@@ -48,4 +48,24 @@ def signup_page(request):
     return render(request, 'authentication/signup.html', context={'form': form})    
 
 def user_follows(request):
-    return render(request, 'authentication/follows.html')
+    follow_form = forms.UserFollowsForm(instance=request.user)
+    if request.method == 'POST':
+        follow_form = forms.UserFollowsForm(request.POST)
+        if (follow_form.is_valid()):
+            follow = follow_form.save(commit=False)
+            follow.remove()
+    context = {
+        'follow_form': follow_form,
+    }
+    return render(request, 'authentication/follows.html', context=context)
+
+
+# <table cellspacing="0" width="100%">
+#         <tbody>
+#             {% for follower in request.user.subscribed.all %}
+#             <tr>
+#                 <td style="border: 1px solid #333;">{{ follower }}</td>
+#             </tr>
+#             {% endfor %}
+#         </tbody>
+#     </table>    
