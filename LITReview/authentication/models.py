@@ -1,15 +1,26 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.conf import settings
 
-class CustomUser(AbstractUser):
-    follow = models.ManyToManyField("self", blank=True, related_name="followers", symmetrical=False)
-    # follow = models.ManyToManyField("self", through='UserFollows')
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
+class User(AbstractUser):
+    followed_members = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        through="UserFollows",
+        related_name="followed",
+    )
+
 
 class UserFollows(models.Model):
-    follows = models.ForeignKey(to=CustomUser, related_name='user', on_delete=models.CASCADE)
-    followed_user = models.ForeignKey(to=CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="following",
+    )
+    followed_user = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="following_by",
+    )
 
     class Meta:
-        unique_together=('follows', 'followed_user')
+        unique_together = ["user", "followed_user"]

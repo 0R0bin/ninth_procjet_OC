@@ -1,8 +1,14 @@
 from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django import forms
-from django.contrib.auth import login, authenticate, logout # import des fonctions login et authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.views.generic import View
 from django.conf import settings
+
+from authentication.models import User
+
+# from LITReview.authentication.models import User
 
 from . import forms
 
@@ -29,11 +35,9 @@ class LoginPageView(View):
         return render(request, self.template_name, context={'form': form, 'message': message})
 
 
-
 def logout_user(request):
     logout(request)
     return redirect('login')
-
 
 
 def signup_page(request):
@@ -47,25 +51,51 @@ def signup_page(request):
             return redirect(settings.LOGIN_REDIRECT_URL)
     return render(request, 'authentication/signup.html', context={'form': form})    
 
-def user_follows(request):
-    follow_form = forms.UserFollowsForm(instance=request.user)
-    if request.method == 'POST':
-        follow_form = forms.UserFollowsForm(request.POST)
-        if (follow_form.is_valid()):
-            follow = follow_form.save(commit=False)
-            follow.remove()
+
+@login_required
+def follows(request):
+    """
+    Render the "follows" template.
+    Use of the AddFollowedForm to register a followed member.
+    Render the list of followed members.
+    Render the list of followers.
+    """
+    add_followed_form = forms.AddFollowedForm()
+    followed = request.user.followed_members.all()
+    followers = request.user.following_by.all().order_by('user')
+    message = ""
+
+    if request.method == "POST":
+        if "add_followed" in request.POST:
+            add_followed_form = forms.AddFollowedForm(request.POST)
+            if add_followed_form.is_valid():
+                followed_name = add_followed_form.cleaned_data["followed_name"]
+                try:
+                    followed_user = User.objects.get(username=followed_name)
+                    user = request.user
+                    user.followed_members.add(followed_user.id)
+                    message = f"{followed_user.username} ajouté à vos suivis !"
+                    add_followed_form = forms.AddFollowedForm()
+                    # return redirect("authentication:follows")
+                except ObjectDoesNotExist:
+                    message = "Pas de membre avec cet identifiant !"
+                    # return redirect("authentication:follows")
     context = {
-        'follow_form': follow_form,
+        "add_followed_form": add_followed_form,
+        "followed": followed,
+        "followers": followers,
+        "message": message
     }
-    return render(request, 'authentication/follows.html', context=context)
+    return render(
+        request,
+        "authentication/follows.html",
+        context=context
+    )
 
 
-# <table cellspacing="0" width="100%">
-#         <tbody>
-#             {% for follower in request.user.subscribed.all %}
-#             <tr>
-#                 <td style="border: 1px solid #333;">{{ follower }}</td>
-#             </tr>
-#             {% endfor %}
-#         </tbody>
-#     </table>    
+@login_required
+def remove_followed(request, followed_id=None):
+    to_remove = get_object_or_404(User, pk=followed_id)
+    request.user.followed_members.remove(to_remove)
+    # return redirect('authentication:follows')
+

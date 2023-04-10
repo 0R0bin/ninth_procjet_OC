@@ -1,20 +1,40 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block content %}
-    <p style="text-align: center;">Suivre d'autres utilisateurs</p>
-    <p>Vous êtes connecté en tant que {{ request.user }}</p>
-    <p style="text-align: center;">Abonnements</p>
+    <h1 class="text-center">Suivre d'autres membres</h1>
+    <form method="post">
+        {{ add_followed_form }}
+        {% csrf_token %}
+        <p class="bg-dark text-white text-center">{{ message }}</p>
+        <div class="text-center">
+            <button type="submit" class="btn btn-outline-dark">S'abonner</button>
+        </div>
+    </form>
 
-    {{follow_form.as_p}}
-    {% csrf_token %}
-    <!-- <table cellspacing="0" width="100%">
-        <tbody>
-             {% for follow in follow_form %} 
-            <tr>
-                <td style="border: 1px solid #333;">{{ follow.followed_user }}</td>
-                <td style="border: 1px solid #333;">Se désabonner</td>
-            </tr>
-             {% endfor %} 
-        </tbody>
-    </table>     -->
-    <p style="text-align: center;">Abonnés</p>
+    <div class="row">
+        <div class="col-6">
+            <h2 class="mt-5">Abonnements</h2>
+           <table class="table table-striped">
+                {% for member in followed %}
+                    <tr>
+                        <td>
+                            {{ member }}
+                        </td>
+                        <td>
+                            <a class="btn btn-outline-dark" href="{% url 'authentication:remove_followed' followed_id=member.id %}">Se désabonner</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-6">
+           <h2 class="mt-5">Abonnés</h2>
+            <table class="table table-striped">
+                {% for member in followers %}
+                    <tr>
+                        <td>{{ member.user }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
 {% endblock content %}

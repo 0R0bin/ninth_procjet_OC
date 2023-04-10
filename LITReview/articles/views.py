@@ -24,7 +24,7 @@ def ticket_upload(request):
             ticket = ticket_form.save(commit=False)
             ticket.creator = request.user
             ticket.save()
-            return redirect('articles/index.html')
+            return redirect('index.html')
     context = {
         'ticket_form': ticket_form,
     }
