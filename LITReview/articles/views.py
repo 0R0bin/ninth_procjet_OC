@@ -1,13 +1,17 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Ticket
+from .models import Review, Ticket
 from . import forms
 from . import models
 
 
 def index(request):
-    latest_ticket_list = Ticket.objects.order_by('-date_created')[:5]
-    context = {'latest_ticket_list': latest_ticket_list}
+    latest_ticket_list = Ticket.objects.order_by('-date_created')[:10]
+    latest_review_list = Review.objects.order_by('-date_created')[:10]
+    context = {
+        'latest_ticket_list': latest_ticket_list, 
+        'latest_review_list': latest_review_list,
+        }
     return render(request, 'articles/index.html', context)
 
 
@@ -45,3 +49,27 @@ def edit_ticket(request, ticket_id):
         'edit_ticket': edit_form,
     }
     return render(request, 'articles/edit_ticket.html', context=context)
+
+@login_required
+def review_and_ticket_upload(request):
+    ticket_form = forms.TicketForm()
+    review_form = forms.ReviewForm()
+    if request.method == 'POST':
+        ticket_form = forms.TicketForm(request.POST, request.FILES)
+        review_form = forms.ReviewForm(request.POST)
+        print(ticket_form.is_valid())
+        print(review_form.is_valid())
+        if all([ticket_form.is_valid(), review_form.is_valid()]):
+            ticket = ticket_form.save(commit=False)
+            ticket.user = request.user
+            ticket.save()
+            review = review_form.save(commit=False)
+            review.user = request.user
+            review.ticket = ticket
+            review.save()
+            return redirect('/')
+    context = {
+        'ticket_form': ticket_form,
+        'review_form': review_form,
+    }
+    return render(request, 'articles/create_review_and_ticket.html', context=context)

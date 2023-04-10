@@ -2,13 +2,22 @@
 {% block content %}
     <div class="container_button_global_review">
         <a href="{% url 'articles:create_ticket' %}"><button style="margin-right: 25px;">Demander une critique</button></a>
-       <button style="margin-left: 25px;">Créer une critique</button>
+        <a href="{% url 'articles:create_both' %}"><button style="margin-left: 25px;">Créer une critique</button></a>
     </div>
     <p>Vous êtes connecté en tant que {{ request.user }}</p>
     {% if latest_ticket_list %}
         <ul>
         {% for ticket in latest_ticket_list %}
             <li><a href="{% url 'articles:detail_ticket' ticket.id %}" target="_blank">{{ ticket.title }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Pas de tickets ou de revues disponible</p>
+    {% endif %}
+    {% if latest_review_list %}
+        <ul>
+        {% for review in latest_review_list %}
+            <li>>{{ review.title }}</li>
         {% endfor %}
         </ul>
     {% else %}
