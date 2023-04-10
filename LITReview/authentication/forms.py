@@ -18,6 +18,3 @@ class AddFollowedForm(forms.Form):
         max_length=150,
         label="Identifiant du membre à suivre",
     )
-
-class DelFollow(forms.ModelForm):
-    delete_user = forms.BooleanField(widget=forms.HiddenInput, initial=True)

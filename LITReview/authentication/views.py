@@ -5,10 +5,8 @@ from django import forms
 from django.contrib.auth import login, authenticate, logout
 from django.views.generic import View
 from django.conf import settings
-
 from authentication.models import User
 
-# from LITReview.authentication.models import User
 
 from . import forms
 
@@ -95,7 +93,7 @@ def follows(request):
 
 @login_required
 def remove_followed(request, followed_id=None):
-    to_remove = get_object_or_404(User, pk=followed_id)
+    to_remove = get_object_or_404(User, id=followed_id)
     request.user.followed_members.remove(to_remove)
-    # return redirect('authentication:follows')
+    return redirect('authentication:follows')
 

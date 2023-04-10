@@ -24,7 +24,7 @@ def ticket_upload(request):
             ticket = ticket_form.save(commit=False)
             ticket.creator = request.user
             ticket.save()
-            return redirect('index.html')
+            return redirect('/')
     context = {
         'ticket_form': ticket_form,
     }
@@ -39,7 +39,7 @@ def edit_ticket(request, ticket_id):
             edit_form = forms.TicketForm(request.POST, instance=ticket)
             if edit_form.is_valid():
                 edit_form.save()
-                return redirect('articles/index.html')
+                return redirect('/')
     context = {
         'ticket': ticket,
         'edit_ticket': edit_form,
