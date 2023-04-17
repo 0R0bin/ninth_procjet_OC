@@ -14,13 +14,4 @@
     {% else %}
         <p>Pas de tickets ou de revues disponible</p>
     {% endif %}
-    {% if latest_review_list %}
-        <ul>
-        {% for review in latest_review_list %}
-            <li>>{{ review.title }}</li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>Pas de tickets ou de revues disponible</p>
-    {% endif %}
 {% endblock content %}

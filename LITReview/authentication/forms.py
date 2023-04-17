@@ -1,13 +1,17 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 from django import forms
-# from authentication.models import UserFollows
+
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=63, label="Nom d'utilisateur")
+    password = forms.CharField(max_length=63, widget=forms.PasswordInput, label='Mot de passe')
+
 
 class CustomUserCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
-        fields = ("username", "email")
+        fields = ("username",)
 
 class AddFollowedForm(forms.Form):
     """

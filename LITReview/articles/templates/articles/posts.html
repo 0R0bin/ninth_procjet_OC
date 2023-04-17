@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+    <p>Vous êtes connecté en tant que {{ request.user }}</p>
+    {% if final_list %}
+        <ul>
+        {% for element in final_list %}
+            <li><a href="{% url 'articles:detail_ticket' element.id %}" target="_blank">{{ element.title }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Pas de tickets ou de revues disponible</p>
+    {% endif %}
+{% endblock content %}

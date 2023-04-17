@@ -3,24 +3,17 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django import forms
 from django.contrib.auth import login, authenticate, logout
-from django.views.generic import View
 from django.conf import settings
 from authentication.models import User
 
-
 from . import forms
 
-class LoginPageView(View):
-    template_name = 'authentication/login.html'
-    form_class = forms
 
-    def get(self, request):
-        form = self.form_class()
-        message = ''
-        return render(request, self.template_name, context={'form': form, 'message': message})
-        
-    def post(self, request):
-        form = self.form_class(request.POST)
+def login_page(request):
+    form = forms.LoginForm()
+    message = ''
+    if request.method == 'POST':
+        form = forms.LoginForm(request.POST)
         if form.is_valid():
             user = authenticate(
                 username=form.cleaned_data['username'],
@@ -29,8 +22,9 @@ class LoginPageView(View):
             if user is not None:
                 login(request, user)
                 return redirect('home')
-        message = 'Identifiants invalides.'
-        return render(request, self.template_name, context={'form': form, 'message': message})
+        message = "Merci de vérifier votre nom d'utilisateur et votre mot de passe"
+        return render(request, 'authentication/login.html', context={'form': form, 'message': message})
+
 
 
 def logout_user(request):

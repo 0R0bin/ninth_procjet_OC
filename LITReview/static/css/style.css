@@ -55,3 +55,28 @@
 .td{
   border: 1px solid #333;
 }
+
+
+
+.div_login_signup{
+  padding-top: 75px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+}
+
+.div_signup_in_login{
+  display: flex;
+  flex-direction:column;
+  align-items: center;
+}
+
+.btn_generic_litreview{
+  cursor: pointer;
+  margin-top: 15px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  border: 1px solid;
+  border-radius: 5px;
+  width: 100px;
+}

@@ -4,10 +4,7 @@
     <h1 style="text-align: center; align-items: center;">Créer un ticket</h2>
     <form method="post" enctype="multipart/form-data">
         {{ ticket_form.as_p }}
-        {% csrf_token %}
-    </form>
-    <h1 style="text-align: center; align-items: center;">Créer une critique</h2>
-    <form method="post" enctype="multipart/form-data">
+        <h1 style="text-align: center; align-items: center;">Créer une critique</h2>
         {{ review_form.as_p }}
         {% csrf_token %}
         <button type="submit">Publier</button>
