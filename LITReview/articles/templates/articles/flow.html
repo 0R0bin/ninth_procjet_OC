@@ -1,16 +1,39 @@
 {% extends 'base.html' %}
+{% load articles_extras %}
 {% block content %}
     <div class="container_button_global_review">
         <a href="{% url 'articles:create_ticket' %}"><button style="margin-right: 25px;">Demander une critique</button></a>
         <a href="{% url 'articles:create_both' %}"><button style="margin-left: 25px;">Créer une critique</button></a>
     </div>
     <p>Vous êtes connecté en tant que {{ request.user }}</p>
-    {% if latest_ticket_list %}
-        <ul>
-        {% for ticket in latest_ticket_list %}
-            <li><a href="{% url 'articles:detail_ticket' ticket.id %}" target="_blank">{{ ticket.title }}</a></li>
+    {% if final_list %}
+        <div class="div_parent_list_r_and_ticket">
+        {% for element in final_list %}
+            {% if element|model_type == 'Ticket' %}
+                <div class="div_ticket_list_r_and_ticket">
+                    {% if element.creator == request.user %}
+                        <h4>Vous avez publié un ticket</h4>
+                    {% else %}
+                        <h4>{{ element.creator }} a publié un ticket</h4>
+                    {% endif %}
+                    <div class="div_ticket_list_title_date">
+                        <p> {{ element.title }} </p>
+                        <p>Créé le {{ element.date_created }} </p>
+                    </div>
+                    <p> {{ element.description }} </p>
+                    <img src="{{ element.image.url }}">
+                    {% if element.creator == request.user %}
+                        <div class="div_ticket_list_btns">
+                            <a href="{% url 'articles:edit_ticket_view' element.id %}"><button>Modifier</button></a>
+                            <a href="{% url 'articles:create_ticket' %}"><button>Supprimer</button></a>
+                        </div>
+                    {% endif %}
+                </div>
+            {% elif element|model_type == 'Review' %}
+                <p>{{ element.headline }}</p>
+            {% endif %}
         {% endfor %}
-        </ul>
+        </div>
     {% else %}
         <p>Pas de tickets ou de revues disponible</p>
     {% endif %}

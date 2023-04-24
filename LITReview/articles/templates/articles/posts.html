@@ -1,12 +1,29 @@
 {% extends 'base.html' %}
+{% load articles_extras %}
 {% block content %}
     <p>Vous êtes connecté en tant que {{ request.user }}</p>
     {% if final_list %}
-        <ul>
+        <div class="div_parent_list_r_and_ticket">
         {% for element in final_list %}
-            <li><a href="{% url 'articles:detail_ticket' element.id %}" target="_blank">{{ element.title }}</a></li>
+            {% if element|model_type == 'Ticket' %}
+                <div class="div_ticket_list_r_and_ticket">
+                    <h4>Vous avez publié un ticket</h4>
+                    <div class="div_ticket_list_title_date">
+                        <p> {{ element.title }} </p>
+                        <p>Créé le {{ element.date_created }} </p>
+                    </div>
+                    <p> {{ element.description }} </p>
+                    <img src="{{ element.image.url }}">
+                    <div class="div_ticket_list_btns">
+                        <a href="{% url 'articles:edit_ticket_view' element.id %}"><button>Modifier</button></a>
+                        <a href="{% url 'articles:del_ticket' element.id %}"><button>Supprimer</button></a>
+                    </div>
+                </div>
+            {% elif element|model_type == 'Review' %}
+                {{ element.headline }}
+            {% endif %}
         {% endfor %}
-        </ul>
+        </div>
     {% else %}
         <p>Pas de tickets ou de revues disponible</p>
     {% endif %}

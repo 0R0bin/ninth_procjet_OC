@@ -80,3 +80,37 @@
   border-radius: 5px;
   width: 100px;
 }
+
+
+.div_parent_list_r_and_ticket{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.div_ticket_list_r_and_ticket{
+  margin-bottom: 15px;
+  padding:10px;
+  background-color: #F4F4F4;
+  border: 1px solid black;
+  border-radius: 15px;
+}
+.div_ticket_list_title_date{
+  display: flex;
+    justify-content: space-between;
+}
+.div_ticket_list_btns{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+.div_ticket_list_btns button{
+  cursor: pointer;
+  margin-left: 15px;
+  /* width: 70px; */
+  height: 35px;
+  padding: 5px;
+  border: 1px solid black;
+  border-radius: 7px;
+}
