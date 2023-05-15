@@ -8,6 +8,9 @@ from . import models
 
 @login_required
 def flow(request):
+    """
+    
+    """
     followed_user_ticket_list = []
     followed_user_review_list = []
     followed_users = request.user.followed_members.all()

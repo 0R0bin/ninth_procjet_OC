@@ -1,14 +1,13 @@
 {% extends 'base.html' %}
 {% load articles_extras %}
 {% block content %}
-    <p>Vous êtes connecté en tant que {{ request.user }}</p>
     {% if final_list %}
         <div class="div_parent_list_r_and_ticket">
         {% for element in final_list %}
             {% if element|model_type == 'Ticket' %}
-                <div class="div_ticket_list_r_and_ticket">
+                <div class="div_list_r_and_ticket">
                     <h4>Vous avez publié un ticket</h4>
-                    <div class="div_ticket_list_title_date">
+                    <div class="div_r_ticket_title_and_date">
                         <p> {{ element.title }} </p>
                         <p>Créé le {{ element.date_created }} </p>
                     </div>
@@ -20,7 +19,37 @@
                     </div>
                 </div>
             {% elif element|model_type == 'Review' %}
-                {{ element.headline }}
+            <div class="div_list_r_and_ticket">
+                    
+                <div class="div_r_ticket_title_and_date">
+                    <h4>Vous avez publié une critique</h4>
+                    <p>Créée le {{ element.date_created }}</p>
+                </div>
+                <div class="r_headline_rating">
+                    <p>{{ element.headline }} -</p>
+                    <div class="r_ratings">
+                        <span class="fa fa-star {% if element.rating > 0 %}checked {% endif %}"></span>
+                        <span class="fa fa-star {% if element.rating > 1 %}checked {% endif %}"></span>
+                        <span class="fa fa-star {% if element.rating > 2 %}checked {% endif %}"></span>
+                        <span class="fa fa-star {% if element.rating > 3 %}checked {% endif %}" ></span>
+                        <span class="fa fa-star {% if element.rating > 4 %}checked {% endif %}"></span>
+                    </div>
+                </div>
+                <p>{{ element.body }}</p>
+                <div class="div_inner_ticket">
+                    <div class="div_r_ticket_title_and_date">
+                        {% if element.ticket.creator == request.user %}
+                        <h4>Ticket - Vous</h4>
+                        {% else %}
+                        <h4>Ticket - {{ element.ticket.creator }}</h4>
+                        {% endif %}
+                        <p>Crée le {{ element.ticket.date_created }}</p>
+                    </div>
+                    <p>{{ element.ticket.description }}</p>
+                    <img src="{{ element.ticket.image.url }}">
+                </div>
+                
+            </div>
             {% endif %}
         {% endfor %}
         </div>
