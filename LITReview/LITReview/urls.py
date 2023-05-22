@@ -17,13 +17,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.auth.views import LoginView
+
+import authentication.views
+
 
 urlpatterns = [
-     path('', LoginView.as_view(
-            template_name='authentication/login.html',
-            redirect_authenticated_user=True),
-        name='login'),
+    path('', authentication.views.login_page, name='login_page'),
     path('admin/', admin.site.urls),
     path('articles/', include('articles.urls')),
     path('accounts/', include('authentication.urls')),

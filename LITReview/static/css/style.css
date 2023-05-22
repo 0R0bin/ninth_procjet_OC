@@ -65,7 +65,7 @@
   flex-direction: row;
 }
 
-.div_signup_in_login{
+.flex_column_center{
   display: flex;
   flex-direction:column;
   align-items: center;
@@ -80,6 +80,11 @@
   border-radius: 5px;
   width: 100px;
 }
+
+/* .btn_generic_litreview, .right{
+  place-self: flex-end;
+}
+ */
 
 
 .div_parent_list_r_and_ticket{
@@ -140,4 +145,12 @@
 
 .checked{
   color: orange;
+}
+
+.basic_placeholder_inside{
+  text-align: center;
+  color: black;
+  font-weight: bold;
+  height: 30px;
+  width: 300px;
 }

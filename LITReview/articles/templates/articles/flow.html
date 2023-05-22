@@ -22,10 +22,9 @@
                     </div>
                     <p> {{ element.description }} </p>
                     <img src="{{ element.image.url }}">
-                    {% if element.creator == request.user %}
+                    {% if element.pk not in ticket_with_review%}
                         <div class="div_ticket_list_btns">
-                            <a href="{% url 'articles:edit_ticket_view' element.id %}"><button>Modifier</button></a>
-                            <a href="{% url 'articles:create_ticket' %}"><button>Supprimer</button></a>
+                            <a href="{% url 'articles:create_review' element.id %}"><button>Créer une critique</button></a>
                         </div>
                     {% endif %}
                 </div>

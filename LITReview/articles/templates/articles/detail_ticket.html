@@ -1,7 +1,0 @@
-{% extends 'base.html' %}
-{% block content %}
-    <h1>{{ ticket.ticket_title }}</h1>
-    <h2>Créé le {{ ticket.date_created }} par {{ ticket.creator }}</h2>
-    <img src="{{ ticket.image.url }}">
-    <p>{{ ticket.description }}</p>
-{% endblock content %}

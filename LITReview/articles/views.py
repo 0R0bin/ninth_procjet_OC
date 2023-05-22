@@ -9,10 +9,11 @@ from . import models
 @login_required
 def flow(request):
     """
-    
+    Renvoies tous les tickets et revues de l'utilisateur et de ses abonnés
     """
     followed_user_ticket_list = []
     followed_user_review_list = []
+    ticket_with_review = []
     followed_users = request.user.followed_members.all()
 
     for followed_user in followed_users:
@@ -22,36 +23,66 @@ def flow(request):
     user_ticket_list = Ticket.objects.all().filter(creator=request.user)
     user_review_list = Review.objects.all().filter(user=request.user)
 
-    final_list = sorted(chain(followed_user_ticket_list, followed_user_review_list, user_ticket_list, user_review_list), key=attrgetter('date_created'))
+    ticket_all = Ticket.objects.all()
+    review_all = Review.objects.all()
+    for ticket in ticket_all:
+        for review in review_all:
+            if review.ticket == ticket:
+                ticket_with_review.append(ticket.pk)
+
+    final_list = sorted(chain(followed_user_ticket_list, followed_user_review_list, user_ticket_list, user_review_list), key=attrgetter('date_created'), reverse=True)
     context = {
         'final_list': final_list, 
+        'ticket_with_review': ticket_with_review,
         }
     
     return render(request, 'articles/flow.html', context)
 
 @login_required
 def posts(request):
+    """
+    Renvoies tous les tickets et revues de l'utilisateur uniquement
+    """
     ticket_list = Ticket.objects.all().filter(creator=request.user)
     review_list = Review.objects.all().filter(user=request.user)
-    final_list = sorted(chain(ticket_list, review_list), key=attrgetter('date_created'))
+    final_list = sorted(chain(ticket_list, review_list), key=attrgetter('date_created'), reverse=True)
     context = {
         'final_list': final_list, 
         }
     return render(request, 'articles/posts.html', context)
 
 @login_required
-def detail_ticket(request, ticket_id):
+def create_review(request, ticket_id):
+    """
+    Transformation en création de review
+    """
+    review_form = forms.ReviewForm()
     ticket = get_object_or_404(Ticket, pk=ticket_id)
-    return render(request, 'articles/detail_ticket.html', {'ticket': ticket})
 
-@login_required
-def del_ticket(request, ticket_id):
-    ticket = get_object_or_404(Ticket, pk=ticket_id)
-    ticket.delete()
-    return redirect('/')
+    if request.method == 'POST':
+        review_form = forms.ReviewForm(request.POST)
+        if (review_form.is_valid()):
+            review = review_form.save(commit=False)
+            review.user = request.user
+            review.save()
+            return redirect('/')
+
+    context = {
+        'element': ticket,
+        'review_form': review_form,
+    }
+
+    return render(request, 'articles/create_review.html', context=context)
+
+# ===========================================
+#                Ticket Part
+# ===========================================
 
 @login_required
 def ticket_upload(request):
+    """
+    Création d'un ticket
+    """
     ticket_form = forms.TicketForm()
     if request.method == 'POST':
         ticket_form = forms.TicketForm(request.POST, request.FILES)
@@ -67,6 +98,9 @@ def ticket_upload(request):
 
 @login_required
 def edit_ticket_view(request, ticket_id):
+    """
+    Modification d'un ticket
+    """
     ticket = get_object_or_404(models.Ticket, id=ticket_id)
     edit_form = forms.TicketForm(instance=ticket)
     if request.method == 'POST':
@@ -82,7 +116,23 @@ def edit_ticket_view(request, ticket_id):
     return render(request, 'articles/edit_ticket.html', context=context)
 
 @login_required
+def del_ticket(request, ticket_id):
+    """
+    Suppression d'un ticket (la revue associée sera supprimée)
+    """
+    ticket = get_object_or_404(Ticket, pk=ticket_id)
+    ticket.delete()
+    return redirect('articles:posts')
+
+# ===========================================
+#                Review Part
+# ===========================================
+
+@login_required
 def review_and_ticket_upload(request):
+    """
+    Création d'une revue et de son ticket
+    """
     review_form = forms.ReviewForm()
     ticket_form = forms.TicketForm()
     if request.method == 'POST':
@@ -102,3 +152,12 @@ def review_and_ticket_upload(request):
         'review_form': review_form,
     }
     return render(request, 'articles/create_review_and_ticket.html', context=context)
+
+@login_required
+def del_review(request, review_id):
+    """
+    Suppression d'une revue
+    """
+    review = get_object_or_404(Review, pk=review_id)
+    review.delete()
+    return redirect('articles:posts')

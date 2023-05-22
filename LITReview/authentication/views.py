@@ -1,19 +1,18 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from django import forms
 from django.contrib.auth import login, authenticate, logout
 from django.conf import settings
 from authentication.models import User
 
-from . import forms
+from authentication.forms import LoginForm, CustomUserCreationForm, AddFollowedForm
 
 
 def login_page(request):
-    form = forms.LoginForm()
+    form = LoginForm()
     message = ''
     if request.method == 'POST':
-        form = forms.LoginForm(request.POST)
+        form = LoginForm(request.POST)
         if form.is_valid():
             user = authenticate(
                 username=form.cleaned_data['username'],
@@ -21,21 +20,21 @@ def login_page(request):
             )
             if user is not None:
                 login(request, user)
-                return redirect('home')
+                return redirect('articles:flow')
         message = "Merci de vérifier votre nom d'utilisateur et votre mot de passe"
-        return render(request, 'authentication/login.html', context={'form': form, 'message': message})
+    return render(request, 'authentication/login.html', context={'form': form, 'message': message})
 
 
-
+@login_required
 def logout_user(request):
     logout(request)
-    return redirect('login')
+    return redirect('login_page')
 
 
 def signup_page(request):
-    form = forms.CustomUserCreationForm()
+    form = CustomUserCreationForm()
     if request.method == 'POST':
-        form = forms.CustomUserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             # auto-login user
@@ -52,14 +51,14 @@ def follows(request):
     Render the list of followed members.
     Render the list of followers.
     """
-    add_followed_form = forms.AddFollowedForm()
+    add_followed_form = AddFollowedForm()
     followed = request.user.followed_members.all()
     followers = request.user.following_by.all().order_by('user')
     message = ""
 
     if request.method == "POST":
         if "add_followed" in request.POST:
-            add_followed_form = forms.AddFollowedForm(request.POST)
+            add_followed_form = AddFollowedForm(request.POST)
             if add_followed_form.is_valid():
                 followed_name = add_followed_form.cleaned_data["followed_name"]
                 try:
@@ -67,7 +66,7 @@ def follows(request):
                     user = request.user
                     user.followed_members.add(followed_user.id)
                     message = f"{followed_user.username} ajouté à vos suivis !"
-                    add_followed_form = forms.AddFollowedForm()
+                    add_followed_form = AddFollowedForm()
                     # return redirect("authentication:follows")
                 except ObjectDoesNotExist:
                     message = "Pas de membre avec cet identifiant !"

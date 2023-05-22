@@ -37,8 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'articles.apps.ArticlesConfig',
-    'authentication.apps.AuthenticationConfig',
+    # 'articles.apps.ArticlesConfig',
+    # 'authentication.apps.AuthenticationConfig',
+    'articles',
+    'authentication',
 ]
 
 MIDDLEWARE = [
@@ -131,5 +133,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.joinpath('media/')
 AUTH_USER_MODEL = "authentication.User"
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'articles/flow'
+LOGIN_URL = 'login_page'
+LOGIN_REDIRECT_URL = 'articles:flow'

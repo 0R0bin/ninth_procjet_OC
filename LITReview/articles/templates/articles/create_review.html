@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="div_parent_list_r_and_ticket">
+    <div>
+        <p>Vous êtes en train de poster une réponse à </p>
+        <div class="div_list_r_and_ticket">
+            {% if element.creator == request.user %}
+                <div class="div_r_ticket_title_and_date">
+                    <h4>Vous avez demandé une critique</h4>
+                    <p>Créé le {{ element.date_created }} </p>
+                </div>
+            {% else %}
+                <div class="div_r_ticket_title_and_date">
+                    <h4>{{ element.creator }} a demandé une critique</h4>
+                    <p>Créé le {{ element.date_created }} </p>
+                </div>
+            {% endif %}
+            <p> {{ element.title }} </p>
+            <p>{{ element.description }}</p>
+            <img src="{{ element.image.url }}">
+        </div>
+    </div>
+    {{ review_form.as_p }}
+</div>
+{% endblock content %}

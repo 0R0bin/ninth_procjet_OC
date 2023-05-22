@@ -20,7 +20,6 @@
                 </div>
             {% elif element|model_type == 'Review' %}
             <div class="div_list_r_and_ticket">
-                    
                 <div class="div_r_ticket_title_and_date">
                     <h4>Vous avez publié une critique</h4>
                     <p>Créée le {{ element.date_created }}</p>
@@ -38,17 +37,16 @@
                 <p>{{ element.body }}</p>
                 <div class="div_inner_ticket">
                     <div class="div_r_ticket_title_and_date">
-                        {% if element.ticket.creator == request.user %}
                         <h4>Ticket - Vous</h4>
-                        {% else %}
-                        <h4>Ticket - {{ element.ticket.creator }}</h4>
-                        {% endif %}
                         <p>Crée le {{ element.ticket.date_created }}</p>
                     </div>
                     <p>{{ element.ticket.description }}</p>
                     <img src="{{ element.ticket.image.url }}">
                 </div>
-                
+                <div class="div_ticket_list_btns">
+                    <a href="{% url 'articles:edit_ticket_view' element.id %}"><button>Modifier</button></a>
+                    <a href="{% url 'articles:del_review' element.id %}"><button>Supprimer</button></a>
+                </div>
             </div>
             {% endif %}
         {% endfor %}

@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="div_login_signup">
-        <div class="div_signup_in_login">
+        <div class="flex_column_center">
             <h3>Inscrivez-vous maintenant</h3>
             <a href="{% url 'authentication:signup' %}"><button class="btn_generic_litreview">S'inscrire</button></a>
         </div>
-        <div>
+        <div class="flex_column_center">
             <h3>Connectez-vous</h3>
             <p>{{ message }}</p>
-            <form method="post">
+            <form method="post" class="flex_column_center">
                 {{ form.as_p }}
                 {% csrf_token %}
-                <button class="btn_generic_litreview" type="submit">Se connecter</button>
+                <button class="btn_generic_litreview right" type="submit">Se connecter</button>
             </form>
         </div>
     </div>

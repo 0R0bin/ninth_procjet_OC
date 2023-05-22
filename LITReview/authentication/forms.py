@@ -3,8 +3,28 @@ from django.contrib.auth import get_user_model
 from django import forms
 
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=63, label="Nom d'utilisateur")
-    password = forms.CharField(max_length=63, widget=forms.PasswordInput, label='Mot de passe')
+    username = forms.CharField(
+        max_length=63,
+        required=True,
+        widget=forms.widgets.TextInput(
+            attrs={
+                "placeholder": "Nom d'utilisateur",
+                'class': 'basic_placeholder_inside up'
+            }
+        ),
+        label="",
+    )
+    password = forms.CharField(
+        max_length=63,
+        required=True,
+        widget=forms.widgets.PasswordInput(
+            attrs={
+                "placeholder": "Mot de passe",
+                'class': 'basic_placeholder_inside'
+            }
+        ),
+        label="",
+    )
 
 
 class CustomUserCreationForm(UserCreationForm):
