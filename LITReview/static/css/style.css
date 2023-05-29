@@ -81,12 +81,6 @@
   width: 100px;
 }
 
-/* .btn_generic_litreview, .right{
-  place-self: flex-end;
-}
- */
-
-
 .div_parent_list_r_and_ticket{
   display: flex;
   flex-direction: column;
@@ -153,4 +147,63 @@
   font-weight: bold;
   height: 30px;
   width: 300px;
+}
+
+.basic_placeholder_outside{
+  text-align: center;
+  color: black;
+  font-weight: bold;
+  height: 30px;
+  display: block;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.basic_display_flex_center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn_generic_litreview_margin_left{
+  cursor: pointer;
+  margin-left: 15px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  border: 1px solid;
+  border-radius: 5px;
+  width: 100px;
+}
+
+.text_center{
+  text-align: center;
+}
+
+.litreview_table{
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  border-collapse: collapse;
+}
+
+.litreview_tr{
+  line-height: 25px;
+}
+
+.litreview_td{
+  border: 1px solid;
+  font-size: 18;
+}
+
+.litreview_last_td{
+  border: 1px solid;
+  font-size: 18;
+  width: 100px;
+  text-align: center;
+}
+
+.link_without_css{
+  color: black;
+  text-decoration: none;
 }

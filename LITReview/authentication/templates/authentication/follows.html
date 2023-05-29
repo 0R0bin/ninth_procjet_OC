@@ -1,40 +1,41 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Suivre d'autres membres</h1>
-    <form method="post">
+
+<h3 class="text_center">Suivre d'autres utilisateurs</h3>
+<form method="post">
+    <div class="basic_display_flex_center">
         {{ add_followed_form }}
         {% csrf_token %}
-        <p>{{ message }}</p>
-        <div>
-            <button type="submit" class="btn btn-outline-dark">S'abonner</button>
-        </div>
-    </form>
-
-    <div>
-        <div>
-            <h2>Abonnements</h2>
-           <table>
-                {% for member in followed %}
-                    <tr>
-                        <td>
-                            {{ member }}
-                        </td>
-                        <td>
-                            <a href="{% url 'authentication:remove_followed' followed_id=member.id %}">Se désabonner</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
-        <div>
-           <h2>Abonnés</h2>
-            <table>
-                {% for member in followers %}
-                    <tr>
-                        <td>{{ member.user }}</td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
+        <button type="submit" class="btn_generic_litreview_margin_left">S'abonner</button>
     </div>
+    <p class="text_center">{{ message }}</p>
+</form>
+
+<div>
+    <div>
+        <h3 class="text_center">Abonnements</h3>
+        <table class="litreview_table">
+            {% for member in followed %}
+                <tr class="litreview_tr">
+                    <td class="litreview_td">
+                        {{ member }}
+                    </td>
+                    <td class="litreview_last_td">
+                        <a class="link_without_css" href="{% url 'authentication:remove_followed' followed_id=member.id %}">Désabonner</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div>
+        <h3 class="text_center">Abonnés</h3>
+        <table class="litreview_table">
+            {% for member in followers %}
+                <tr class="litreview_tr">
+                    <td class="litreview_td">{{ member.user }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
 {% endblock content %}

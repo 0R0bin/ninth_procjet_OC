@@ -1,10 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
-<p>Vous êtes connecté en tant que {{ request.user }}</p>
-    <h1 style="text-align: center; align-items: center;">Créer un ticket</h2>
-    <form method="post" enctype="multipart/form-data">
-        {{ ticket_form.as_p }}
-        {% csrf_token %}
-        <button type="submit">Publier</button>
-    </form>
+
+<h2 class="text_center">Créer un ticket</h2>
+<form method="post" enctype="multipart/form-data">
+    {{ ticket_form.as_p }}
+    <div class="fieldWrapper"  style="margin:10px;">
+          <label for="id_title">Description 1:</label><br>
+          <textarea name="id_title" cols="40" rows="5" required id="id_title"></textarea>
+    </div>
+    {% csrf_token %}
+    <button type="submit">Publier</button>
+</form>
+
+
+
 {% endblock content %}

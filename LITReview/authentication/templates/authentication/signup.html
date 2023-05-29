@@ -1,13 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2>Inscrivez-vous</h2>
-    {% if form.errors %}
-        {{ form.errors }}
-    {% endif %}
-    <form method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <button class="btn_generic_litreview">Retourner</button>
-        <button class="btn_generic_litreview" type="submit">S'inscrire</button>
-    </form>
+    <div class="flex_column_center">
+        <h3>Inscrivez-vous</h3>
+        <p>{{ message }}</p>
+        {% if form.errors %}
+            {{ form.errors }}
+        {% endif %}
+        <form method="post">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <div class="div_ticket_list_btns">
+                <button class="btn_generic_litreview">Retourner</button>
+                <button class="btn_generic_litreview" type="submit">S'inscrire</button>
+            </div>
+        </form>
+    </div>
 {% endblock content %}

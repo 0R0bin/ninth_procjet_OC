@@ -5,7 +5,6 @@
         <a href="{% url 'articles:create_ticket' %}"><button style="margin-right: 25px;">Demander une critique</button></a>
         <a href="{% url 'articles:create_both' %}"><button style="margin-left: 25px;">Créer une critique</button></a>
     </div>
-    <p>Vous êtes connecté en tant que {{ request.user }}</p>
     {% if final_list %}
         <div class="div_parent_list_r_and_ticket">
         {% for element in final_list %}

@@ -1,7 +1,8 @@
+from django.forms import ValidationError
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, authenticate, logout, password_validation
 from django.conf import settings
 from authentication.models import User
 
@@ -32,15 +33,27 @@ def logout_user(request):
 
 
 def signup_page(request):
+    message = ''
     form = CustomUserCreationForm()
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            # auto-login user
-            login(request, user)
-            return redirect(settings.LOGIN_REDIRECT_URL)
-    return render(request, 'authentication/signup.html', context={'form': form})    
+            password = form.cleaned_data['password']
+            password2 = form.cleaned_data['password2']
+
+            if password and password2 and password != password2:
+                message = 'Veuillez entrer le même mot de passe !'
+            else:
+                try:
+                    password_validation.validate_password(password)
+                    user = form.save()
+                    # auto-login user
+                    login(request, user)
+                    return redirect(settings.LOGIN_REDIRECT_URL)
+                except ValidationError as error:
+                    message = error
+                
+    return render(request, 'authentication/signup.html', context={'form': form, 'message': message})    
 
 
 @login_required
@@ -67,10 +80,8 @@ def follows(request):
                     user.followed_members.add(followed_user.id)
                     message = f"{followed_user.username} ajouté à vos suivis !"
                     add_followed_form = AddFollowedForm()
-                    # return redirect("authentication:follows")
                 except ObjectDoesNotExist:
                     message = "Pas de membre avec cet identifiant !"
-                    # return redirect("authentication:follows")
     context = {
         "add_followed_form": add_followed_form,
         "followed": followed,
