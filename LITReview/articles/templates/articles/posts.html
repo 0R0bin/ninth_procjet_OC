@@ -5,14 +5,16 @@
         <div class="div_parent_list_r_and_ticket">
         {% for element in final_list %}
             {% if element|model_type == 'Ticket' %}
-                <div class="div_list_r_and_ticket">
-                    <h4>Vous avez publié un ticket</h4>
-                    <div class="div_r_ticket_title_and_date">
-                        <p> {{ element.title }} </p>
-                        <p>Créé le {{ element.date_created }} </p>
-                    </div>
-                    <p> {{ element.description }} </p>
+            <div class="div_list_r_and_ticket">
+                <h4>Vous avez publié un ticket</h4>
+                <div class="div_r_ticket_title_and_date">
+                    <p> {{ element.title }} </p>
+                    <p>Créé le {{ element.date_created }} </p>
+                </div>
+                <p> {{ element.description }} </p>
+                    {% if element.image %}
                     <img src="{{ element.image.url }}">
+                    {% endif %}
                     <div class="div_ticket_list_btns">
                         <a href="{% url 'articles:edit_ticket_view' element.id %}"><button>Modifier</button></a>
                         <a href="{% url 'articles:del_ticket' element.id %}"><button>Supprimer</button></a>
@@ -41,7 +43,9 @@
                         <p>Crée le {{ element.ticket.date_created }}</p>
                     </div>
                     <p>{{ element.ticket.description }}</p>
+                    {% if element.ticket.image %}
                     <img src="{{ element.ticket.image.url }}">
+                    {% endif %}
                 </div>
                 <div class="div_ticket_list_btns">
                     <a href="{% url 'articles:edit_ticket_view' element.id %}"><button>Modifier</button></a>

@@ -20,7 +20,9 @@
                         <p>Créé le {{ element.date_created }} </p>
                     </div>
                     <p> {{ element.description }} </p>
+                    {% if element.image %}
                     <img src="{{ element.image.url }}">
+                    {% endif %}
                     {% if element.pk not in ticket_with_review%}
                         <div class="div_ticket_list_btns">
                             <a href="{% url 'articles:create_review' element.id %}"><button>Créer une critique</button></a>
@@ -60,7 +62,9 @@
                             <p>Crée le {{ element.ticket.date_created }}</p>
                         </div>
                         <p>{{ element.ticket.description }}</p>
+                        {% if element.ticket.image %}
                         <img src="{{ element.ticket.image.url }}">
+                        {% endif %}
                     </div>
                     
                 </div>

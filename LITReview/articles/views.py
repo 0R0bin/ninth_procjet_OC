@@ -65,7 +65,7 @@ def create_review(request, ticket_id):
             review = review_form.save(commit=False)
             review.user = request.user
             review.save()
-            return redirect('/')
+            return redirect('articles:flow')
 
     context = {
         'element': ticket,
@@ -90,7 +90,7 @@ def ticket_upload(request):
             ticket = ticket_form.save(commit=False)
             ticket.creator = request.user
             ticket.save()
-            return redirect('/')
+            return redirect('articles:flow')
     context = {
         'ticket_form': ticket_form,
     }
@@ -108,7 +108,7 @@ def edit_ticket_view(request, ticket_id):
             edit_form = forms.TicketForm(request.POST, instance=ticket)
             if edit_form.is_valid():
                 edit_form.save()
-                return redirect('/')
+                return redirect('articles:posts')
     context = {
         'ticket': ticket,
         'edit_ticket': edit_form,
@@ -146,7 +146,7 @@ def review_and_ticket_upload(request):
             review.user = request.user
             review.ticket = ticket
             review.save()
-            return redirect('/')
+            return redirect('articles:flow')
     context = {
         'ticket_form': ticket_form,
         'review_form': review_form,
