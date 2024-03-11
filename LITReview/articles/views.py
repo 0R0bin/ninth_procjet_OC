@@ -4,7 +4,8 @@ from itertools import chain
 from operator import attrgetter
 from .models import Review, Ticket
 from . import forms
-from . import models
+from django.core.exceptions import PermissionDenied
+
 
 @login_required
 def flow(request):
@@ -102,7 +103,12 @@ def edit_ticket_view(request, ticket_id):
     """
     Modification d'un ticket
     """
-    ticket = get_object_or_404(models.Ticket, id=ticket_id)
+    ticket = get_object_or_404(Ticket, id=ticket_id)
+
+    # Vérification des droits de l'utilisateur pour la modification du ticket
+    if ticket.creator != request.user:
+        raise PermissionDenied
+
     edit_form = forms.TicketForm(instance=ticket)
     if request.method == 'POST':
         if 'edit_ticket' in request.POST:
@@ -121,7 +127,12 @@ def edit_review_view(request, review_id):
     """
     Modification d'une critique
     """
-    review = get_object_or_404(models.Review, id=review_id)
+    review = get_object_or_404(Review, id=review_id)
+
+    # Vérification des droits de l'utilisateur pour la modification de la review
+    if review.user != request.user:
+        raise PermissionDenied
+
     edit_form = forms.ReviewForm(instance=review)
     if request.method == 'POST':
         if 'edit_review' in request.POST:
@@ -141,6 +152,11 @@ def del_ticket(request, ticket_id):
     Suppression d'un ticket (la revue associée sera supprimée)
     """
     ticket = get_object_or_404(Ticket, pk=ticket_id)
+
+    # Vérification des droits de l'utilisateur pour la suppression du ticket
+    if ticket.creator != request.user:
+        raise PermissionDenied
+    
     ticket.delete()
     return redirect('articles:posts')
 
@@ -179,5 +195,10 @@ def del_review(request, review_id):
     Suppression d'une revue
     """
     review = get_object_or_404(Review, pk=review_id)
+
+    # Vérification des droits de l'utilisateur pour la suppression de la review
+    if review.user != request.user:
+        raise PermissionDenied
+
     review.delete()
     return redirect('articles:posts')

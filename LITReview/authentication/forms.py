@@ -1,6 +1,6 @@
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import get_user_model, password_validation
 from django import forms
+from django.contrib.auth import get_user_model
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -47,7 +47,6 @@ class CustomUserCreationForm(forms.ModelForm):
                 "placeholder": "Mot de passe",
                 'class': 'basic_placeholder_inside'
             }
-            
         ),
         label="",
     )
