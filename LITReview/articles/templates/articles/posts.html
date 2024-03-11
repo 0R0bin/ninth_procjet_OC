@@ -13,7 +13,7 @@
                 </div>
                 <p> {{ element.description }} </p>
                     {% if element.image %}
-                    <img src="{{ element.image.url }}">
+                    <img src="{{ element.image.url }}" alt="Image du ticket">
                     {% endif %}
                     <div class="div_ticket_list_btns">
                         <a href="{% url 'articles:edit_ticket_view' element.id %}"><button>Modifier</button></a>
@@ -44,11 +44,11 @@
                     </div>
                     <p>{{ element.ticket.description }}</p>
                     {% if element.ticket.image %}
-                    <img src="{{ element.ticket.image.url }}">
+                    <img src="{{ element.ticket.image.url }}" alt="Image de la revue">
                     {% endif %}
                 </div>
                 <div class="div_ticket_list_btns">
-                    <a href="{% url 'articles:edit_ticket_view' element.id %}"><button>Modifier</button></a>
+                    <a href="{% url 'articles:edit_review_view' element.id %}"><button>Modifier</button></a>
                     <a href="{% url 'articles:del_review' element.id %}"><button>Supprimer</button></a>
                 </div>
             </div>

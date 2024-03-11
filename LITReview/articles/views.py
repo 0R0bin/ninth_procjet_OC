@@ -64,6 +64,7 @@ def create_review(request, ticket_id):
         if (review_form.is_valid()):
             review = review_form.save(commit=False)
             review.user = request.user
+            review.ticket = ticket
             review.save()
             return redirect('articles:flow')
 
@@ -105,7 +106,7 @@ def edit_ticket_view(request, ticket_id):
     edit_form = forms.TicketForm(instance=ticket)
     if request.method == 'POST':
         if 'edit_ticket' in request.POST:
-            edit_form = forms.TicketForm(request.POST, instance=ticket)
+            edit_form = forms.TicketForm(request.POST, request.FILES, instance=ticket)
             if edit_form.is_valid():
                 edit_form.save()
                 return redirect('articles:posts')
@@ -114,6 +115,25 @@ def edit_ticket_view(request, ticket_id):
         'edit_ticket': edit_form,
     }
     return render(request, 'articles/edit_ticket.html', context=context)
+
+@login_required
+def edit_review_view(request, review_id):
+    """
+    Modification d'une critique
+    """
+    review = get_object_or_404(models.Review, id=review_id)
+    edit_form = forms.ReviewForm(instance=review)
+    if request.method == 'POST':
+        if 'edit_review' in request.POST:
+            edit_form = forms.ReviewForm(request.POST, instance=review)
+            if edit_form.is_valid():
+                edit_form.save()
+                return redirect('articles:posts')
+    context = {
+        'review': review,
+        'edit_review': edit_form,
+    }
+    return render(request, 'articles/edit_review.html', context=context)
 
 @login_required
 def del_ticket(request, ticket_id):

@@ -8,4 +8,22 @@
         {% csrf_token %}
         <button type="submit">Publier</button>
     </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var previousImg = document.getElementById('previous-pic');
+            var txtBtn = document.getElementById('changeLabel');
+            txtBtn.innerHTML = '<i class="fa fa-cloud-upload" style="margin-right:10px;"></i>Ajouter une photo';
+            {% if  ticket.image %}
+            previousImg.setAttribute("src", "{{ ticket.image.url }}");
+            {% endif %}
+        });
+    
+        const imgInput = document.querySelector("#id_image");
+        const displayImg = document.querySelector("#display-img");
+        imgInput.addEventListener('change', (event) => {
+            const imgObject = event.target.files[0]
+            displayImg.src = URL.createObjectURL(imgObject)
+        });
+    </script>
 {% endblock content %}

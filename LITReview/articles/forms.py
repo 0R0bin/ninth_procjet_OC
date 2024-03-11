@@ -2,6 +2,20 @@ from django import forms
 
 from . import models
 
+class WidgetRadioButtunInput(forms.FileInput):
+    template_name = 'articles/custom_star_rating.html'
+
+    def __init__(self, attrs=None):
+        super().__init__(attrs)
+        self.attrs['class'] = 'form-control'
+
+class WidgetImgInput(forms.FileInput):
+    template_name = 'articles/custom_image_field.html'
+
+    def __init__(self, attrs=None):
+        super().__init__(attrs)
+        self.attrs['class'] = 'form-control-file'
+
 
 class TicketForm(forms.ModelForm):
     edit_ticket = forms.BooleanField(widget=forms.HiddenInput, initial=True)
@@ -37,7 +51,10 @@ class TicketForm(forms.ModelForm):
         labels = {
             'title': 'Titre',
             'description': 'Description',
-            'image': '',
+            'image': 'Image :',
+        }
+        widgets = {
+            'image': WidgetImgInput(),
         }
 
 class ReviewForm(forms.ModelForm):
@@ -50,4 +67,4 @@ class ReviewForm(forms.ModelForm):
             'headline': 'Titre',
             'rating': 'Note',
             'body': 'Commentaire',
-        }
+        }  

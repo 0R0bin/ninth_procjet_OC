@@ -20,6 +20,10 @@
             <img src="{{ element.image.url }}">
         </div>
     </div>
-    {{ review_form.as_p }}
+    <form method="post" enctype="multipart/form-data">
+        {{ review_form.as_p }}
+        {% csrf_token %}
+        <button type="submit">Publier</button>
+    </form>
 </div>
 {% endblock content %}

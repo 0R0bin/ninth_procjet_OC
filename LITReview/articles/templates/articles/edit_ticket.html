@@ -1,9 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
     <h2>Modifier le ticket</h2>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {{ edit_ticket.as_p }}
         {% csrf_token %}
         <button type="submit" >Sauvegarder</button>
     </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var previousImg = document.getElementById('previous-pic');
+            console.log(previousImg);
+            {% if  ticket.image %}
+            previousImg.setAttribute("src", "{{ ticket.image.url }}");
+            {% endif %}
+        });
+    
+        const imgInput = document.querySelector("#id_image");
+        const displayImg = document.querySelector("#display-img");
+        imgInput.addEventListener('change', (event) => {
+            const imgObject = event.target.files[0]
+            displayImg.src = URL.createObjectURL(imgObject)
+        });
+    </script>
 {% endblock content %}

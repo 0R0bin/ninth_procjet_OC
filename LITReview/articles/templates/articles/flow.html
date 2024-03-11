@@ -21,7 +21,7 @@
                     </div>
                     <p> {{ element.description }} </p>
                     {% if element.image %}
-                    <img src="{{ element.image.url }}">
+                    <img src="{{ element.image.url }}" alt="Image du ticket">
                     {% endif %}
                     {% if element.pk not in ticket_with_review%}
                         <div class="div_ticket_list_btns">
@@ -63,7 +63,7 @@
                         </div>
                         <p>{{ element.ticket.description }}</p>
                         {% if element.ticket.image %}
-                        <img src="{{ element.ticket.image.url }}">
+                        <img src="{{ element.ticket.image.url }}" alt="Image de la revue">
                         {% endif %}
                     </div>
                     
