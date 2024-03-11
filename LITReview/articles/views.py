@@ -18,8 +18,10 @@ def flow(request):
     followed_users = request.user.followed_members.all()
 
     for followed_user in followed_users:
-        followed_user_ticket_list = followed_user_ticket_list + list(chain(Ticket.objects.all().filter(creator=followed_user)))
-        followed_user_review_list = followed_user_review_list + list(chain(Review.objects.all().filter(user=followed_user)))
+        followed_user_ticket_list = followed_user_ticket_list + list(
+            chain(Ticket.objects.all().filter(creator=followed_user)))
+        followed_user_review_list = followed_user_review_list + list(
+            chain(Review.objects.all().filter(user=followed_user)))
 
     user_ticket_list = Ticket.objects.all().filter(creator=request.user)
     user_review_list = Review.objects.all().filter(user=request.user)
@@ -31,13 +33,19 @@ def flow(request):
             if review.ticket == ticket:
                 ticket_with_review.append(ticket.pk)
 
-    final_list = sorted(chain(followed_user_ticket_list, followed_user_review_list, user_ticket_list, user_review_list), key=attrgetter('date_created'), reverse=True)
+    final_list = sorted(
+        chain(
+            followed_user_ticket_list,
+            followed_user_review_list,
+            user_ticket_list,
+            user_review_list), key=attrgetter('date_created'), reverse=True)
     context = {
-        'final_list': final_list, 
+        'final_list': final_list,
         'ticket_with_review': ticket_with_review,
         }
-    
+
     return render(request, 'articles/flow.html', context)
+
 
 @login_required
 def posts(request):
@@ -46,11 +54,14 @@ def posts(request):
     """
     ticket_list = Ticket.objects.all().filter(creator=request.user)
     review_list = Review.objects.all().filter(user=request.user)
-    final_list = sorted(chain(ticket_list, review_list), key=attrgetter('date_created'), reverse=True)
+    final_list = sorted(
+        chain(ticket_list, review_list),
+        key=attrgetter('date_created'), reverse=True)
     context = {
-        'final_list': final_list, 
+        'final_list': final_list,
         }
     return render(request, 'articles/posts.html', context)
+
 
 @login_required
 def create_review(request, ticket_id):
@@ -76,10 +87,10 @@ def create_review(request, ticket_id):
 
     return render(request, 'articles/create_review.html', context=context)
 
+
 # ===========================================
 #                Ticket Part
 # ===========================================
-
 @login_required
 def ticket_upload(request):
     """
@@ -98,6 +109,7 @@ def ticket_upload(request):
     }
     return render(request, 'articles/create_ticket.html', context=context)
 
+
 @login_required
 def edit_ticket_view(request, ticket_id):
     """
@@ -112,7 +124,10 @@ def edit_ticket_view(request, ticket_id):
     edit_form = forms.TicketForm(instance=ticket)
     if request.method == 'POST':
         if 'edit_ticket' in request.POST:
-            edit_form = forms.TicketForm(request.POST, request.FILES, instance=ticket)
+            edit_form = forms.TicketForm(
+                request.POST,
+                request.FILES,
+                instance=ticket)
             if edit_form.is_valid():
                 edit_form.save()
                 return redirect('articles:posts')
@@ -122,6 +137,7 @@ def edit_ticket_view(request, ticket_id):
     }
     return render(request, 'articles/edit_ticket.html', context=context)
 
+
 @login_required
 def edit_review_view(request, review_id):
     """
@@ -129,7 +145,7 @@ def edit_review_view(request, review_id):
     """
     review = get_object_or_404(Review, id=review_id)
 
-    # Vérification des droits de l'utilisateur pour la modification de la review
+    # Vérification droits user
     if review.user != request.user:
         raise PermissionDenied
 
@@ -146,6 +162,7 @@ def edit_review_view(request, review_id):
     }
     return render(request, 'articles/edit_review.html', context=context)
 
+
 @login_required
 def del_ticket(request, ticket_id):
     """
@@ -156,14 +173,14 @@ def del_ticket(request, ticket_id):
     # Vérification des droits de l'utilisateur pour la suppression du ticket
     if ticket.creator != request.user:
         raise PermissionDenied
-    
+
     ticket.delete()
     return redirect('articles:posts')
+
 
 # ===========================================
 #                Review Part
 # ===========================================
-
 @login_required
 def review_and_ticket_upload(request):
     """
@@ -187,7 +204,11 @@ def review_and_ticket_upload(request):
         'ticket_form': ticket_form,
         'review_form': review_form,
     }
-    return render(request, 'articles/create_review_and_ticket.html', context=context)
+    return render(
+        request,
+        'articles/create_review_and_ticket.html',
+        context=context)
+
 
 @login_required
 def del_review(request, review_id):

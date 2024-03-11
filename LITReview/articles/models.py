@@ -8,7 +8,8 @@ class Ticket(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(max_length=1000, blank=True)
     image = models.ImageField(null=True, blank=True)
-    creator = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    creator = models.ForeignKey(to=settings.AUTH_USER_MODEL,
+                                on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
     IMAGE_MAX_SIZE = (800, 800)
 
